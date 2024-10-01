@@ -2,12 +2,17 @@ import fastify, { FastifyInstance } from "fastify";
 import { salaRoutes } from "./sala/sala.routes";
 import { ApiError } from "./errors";
 import { z } from "zod";
+import { arCondicionadoRoutes } from "./arcondicionado/ar.routes";
 
 const app: FastifyInstance = fastify();
 
 app.register(salaRoutes, {
     prefix: 'salas'
 });
+
+app.register(arCondicionadoRoutes, {
+    prefix: 'ar'
+})
 
 app.setErrorHandler((error, request, reply) => {
     if (error instanceof ApiError) {
@@ -21,6 +26,7 @@ app.setErrorHandler((error, request, reply) => {
         .send({ message: error.errors[0].message })
     }
     else {
+        console.log('aqui')
         reply
         .status(500)
         .send({ message: 'Erro interno no servidor.' })
