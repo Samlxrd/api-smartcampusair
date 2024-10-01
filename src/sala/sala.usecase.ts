@@ -27,30 +27,31 @@ export class SalaUsecase {
     }
 
     async update(id: number, data: UpdateSalaSchema): Promise<Sala> {
-        // const sala = await this.salaRepository.findById(id);
-        // if (!sala) {
-        //     throw new ApiError(404, 'Sala não encontrada');
-        // }
+        const sala = await this.salaRepository.findById(id);
+        if (!sala) {
+            throw new ApiError(404, 'Sala não encontrada');
+        }
 
-        // if(!data.nome) {
-        //     data.nome = sala.nome
-        //     const result = this.salaRepository.update(id, data);
-        //     return result;
-        // } 
+        if(!data.nome) {
+            data.nome = sala.nome
+            const result = this.salaRepository.update(id, data);
+            return result;
+        } 
 
-        // const salaExists = await this.salaRepository.findByName(data.nome);
+        const salaExists = await this.salaRepository.findByName(data.nome);
 
-        // if (salaExists && salaExists.id !== id) {
-        //     throw new ApiError(409, 'Esse nome de sala já está registrado no sistema.');
-        // }
+        if (salaExists && salaExists.id !== id) {
+            throw new ApiError(409, 'Esse nome de sala já está registrado no sistema.');
+        }
 
         const result = await this.salaRepository.update(id, data);
         return result;
     }
 
     async delete(id: number): Promise<void> {
-        console.log('alo', id)
+        
         const sala = await this.salaRepository.findById(id);
+
         if (!sala) {
             throw new ApiError(404, 'Sala não encontrada');
         }

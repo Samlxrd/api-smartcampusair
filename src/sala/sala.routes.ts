@@ -1,5 +1,6 @@
 import { FastifyInstance, FastifyRequest } from "fastify";
 import { SalaController } from "./sala.controller";
+import { ApiError } from "../errors";
 
 interface IdParams {
     id: number;
@@ -13,8 +14,8 @@ export async function salaRoutes(app: FastifyInstance) {
     app.delete('/:id', async(req, reply) => salaController.delete(req, reply));     
     app.patch<{ Params: IdParams }> ('/:id', async(req, reply) => {
 
-        if (!req.params.id) { throw new Error('Id não informado'); }
-
+        if (!req.params.id) { throw new ApiError(400, 'Id não informado'); }
+        
         const id = Number(req.params.id);
         return salaController.update(id, req, reply);
     });

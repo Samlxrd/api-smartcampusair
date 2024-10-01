@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { SalaUsecase } from "./sala.usecase";
-import { createSalaSchema, CreateSalaSchema, UpdateSalaSchema } from "./sala.schema";
+import { createSalaSchema, UpdateSalaSchema } from "./sala.schema";
+import { ApiError } from "../errors";
 
 export class SalaController {
     private salaUseCase: SalaUsecase;
@@ -26,6 +27,9 @@ export class SalaController {
 
     async delete(req: FastifyRequest, reply: FastifyReply) {
         const { id } = req.params as { id: number}
+
+        if (!id) { throw new ApiError(400, 'Você deve informar o id da sala. => /:id') }
+
         await this.salaUseCase.delete(Number(id));
         return reply.send({ message: 'Sala deletada com sucesso' });
     }

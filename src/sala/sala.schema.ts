@@ -1,7 +1,7 @@
 import z from 'zod'
 
 export const createSalaSchema = z.object({
-    nome: z.string({ message: 'Você deve informar o nome / código da sala.'}),
+    nome: z.string({ message: 'Você deve informar o nome / código da sala.'}).toUpperCase(),
     pavilhao: z.string({ message: 'Você deve informar o pavilhão da sala.'}),
     andar: z.coerce
     .number({ message: 'Você deve informar o andar da sala.'})
