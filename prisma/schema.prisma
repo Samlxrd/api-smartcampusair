@@ -7,39 +7,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model administrador {
-  id         Int          @id @default(autoincrement())
-  usuario    String      @unique @db.VarChar(50)
-  senha      String      @db.VarChar(50)
-  nome       String      @db.VarChar(100)
-  matricula  Int         @unique
-  funcao     String      @db.VarChar(255)
-  ocorrencia ocorrencia[]
-}
-
 model arcondicionado {
   id           Int      @id @default(autoincrement())
-  id_sala      Int
-  status_atual Boolean @default(false)
-  sala         sala    @relation(fields: [id_sala], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id_sala      Int?
+  status_atual Boolean?
+  sala         sala?    @relation(fields: [id_sala], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model ocorrencia {
-  id            Int            @id @default(autoincrement())
-  momento       DateTime?      @db.Timestamp(6)
-  temperatura   Float?
-  presenca      Boolean?
-  id_adm        Int?
-  id_sala       Int
-  administrador administrador? @relation(fields: [id_adm], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  sala          sala           @relation(fields: [id_sala], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id          Int       @id @default(autoincrement())
+  momento     DateTime? @db.Timestamp(6)
+  temperatura Float?
+  presenca    Boolean?
+  id_user     Int?
+  id_sala     Int
+  sala        sala      @relation(fields: [id_sala], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuario     usuario?  @relation(fields: [id_user], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model sala {
   id             Int              @id @default(autoincrement())
   nome           String          @db.VarChar(50)
-  pavilhao       String          @db.VarChar(255)
+  id_pav         Int
   andar          Int
   arcondicionado arcondicionado[]
   ocorrencia     ocorrencia[]
+  pavilhao       pavilhao        @relation(fields: [id_pav], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model pavilhao {
+  id   Int     @id @default(autoincrement())
+  nome String @db.VarChar(100)
+  sala sala[]
+}
+
+model usuario {
+  id            Int          @id @default(autoincrement())
+  nome_usuario  String      @unique @db.VarChar(50)
+  senha         String      @db.VarChar(50)
+  nome_completo String      @db.VarChar(100)
+  matricula     Int         @unique
+  funcao        String      @db.VarChar(255)
+  ocorrencia    ocorrencia[]
 }

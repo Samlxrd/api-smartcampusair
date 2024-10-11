@@ -7,7 +7,7 @@ export class SalaRepositoryPrisma implements SalaRepository {
         const result = await prisma.sala.create({
             data: {
                 nome: data.nome,
-                pavilhao: data.pavilhao,
+                id_pav: data.id_pav,
                 andar: data.andar,
             }
         });
@@ -34,10 +34,11 @@ export class SalaRepositoryPrisma implements SalaRepository {
 
     async getAll(): Promise<Sala[]> {
         const salasPorPavilhao = await prisma.$queryRaw`
-        SELECT pavilhao, array_agg(json_build_object('nome', nome, 'andar', andar) ORDER BY andar ASC) AS salas
-        FROM sala
-        GROUP BY pavilhao
-        ORDER BY pavilhao ASC;
+        SELECT p.nome as pavilhao, array_agg(json_build_object('id', s.id, 'nome', s.nome, 'andar', s.andar) ORDER BY s.andar ASC) AS salas
+        FROM sala s
+        JOIN pavilhao p ON s.id_pav = p.id
+        GROUP BY p.nome
+        ORDER BY p.nome ASC;
         ` as Sala[];
         return salasPorPavilhao;
     }
@@ -47,7 +48,7 @@ export class SalaRepositoryPrisma implements SalaRepository {
             where: { id },
             data: {
                 nome: data.nome,
-                pavilhao: data.pavilhao,
+                id_pav: data.id_pav,
                 andar: data.andar
             }
         });

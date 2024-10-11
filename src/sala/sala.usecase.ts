@@ -1,12 +1,16 @@
 import { ApiError } from "../errors";
+import { PavilhaoRepository } from "../pavilhao/pavilhao.interface";
+import { PavilhaoRepositoryPrisma } from "../pavilhao/pavilhao.repository";
 import { Sala, SalaRepository } from "./sala.interface";
 import { SalaRepositoryPrisma } from "./sala.repository";
 import { CreateSalaSchema, UpdateSalaSchema } from "./sala.schema";
 
 export class SalaUsecase {
     private salaRepository: SalaRepository;
+    private pavilhaoRepository: PavilhaoRepository;
     constructor() {
         this.salaRepository = new SalaRepositoryPrisma();
+        this.pavilhaoRepository = new PavilhaoRepositoryPrisma();
     }
 
     async create(data: CreateSalaSchema): Promise<Sala> {
@@ -14,6 +18,11 @@ export class SalaUsecase {
         const salaExists = await this.salaRepository.findByName(data.nome)
         if (salaExists) {
             throw new ApiError(409, 'Esse nome de sala já está registrado no sistema.');
+        }
+
+        const pavilhaoExists = await this.pavilhaoRepository.findById(data.id_pav);
+        if (!pavilhaoExists) {
+            throw new ApiError(404, 'Pavilhão não encontrado');
         }
 
         const result = this.salaRepository.create(data);

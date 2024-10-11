@@ -3,7 +3,7 @@ import { CreateSalaSchema, UpdateSalaSchema } from "./sala.schema";
 export interface Sala {
     id: number;
     nome: string;
-    pavilhao: string;
+    id_pav: number;
     andar: number;
 }
 

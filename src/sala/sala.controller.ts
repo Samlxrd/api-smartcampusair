@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { SalaUsecase } from "./sala.usecase";
-import { createSalaSchema, UpdateSalaSchema } from "./sala.schema";
+import { createSalaSchema, updateSalaSchema, UpdateSalaSchema } from "./sala.schema";
 import { ApiError } from "../errors";
 
 export class SalaController {
@@ -21,7 +21,8 @@ export class SalaController {
     }
 
     async update(id: number, req: FastifyRequest, reply: FastifyReply) {
-        const result = await this.salaUseCase.update(id, req.body as UpdateSalaSchema);
+        const salaData = updateSalaSchema.parse(req.body);
+        const result = await this.salaUseCase.update(id, salaData);
         return reply.send(result);
     }
 
