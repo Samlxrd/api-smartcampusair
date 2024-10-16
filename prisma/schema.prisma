@@ -44,7 +44,7 @@ model pavilhao {
 model usuario {
   id            Int          @id @default(autoincrement())
   nome_usuario  String      @unique @db.VarChar(50)
-  senha         String      @db.VarChar(50)
+  senha         String      @db.VarChar(100)
   nome_completo String      @db.VarChar(100)
   matricula     Int         @unique
   funcao        String      @db.VarChar(255)
