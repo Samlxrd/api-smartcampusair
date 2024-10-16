@@ -4,6 +4,7 @@ import { ApiError } from "./errors";
 import { z } from "zod";
 import { arCondicionadoRoutes } from "./arcondicionado/ar.routes";
 import { pavilhaoRoutes } from "./pavilhao/pavilhao.routes";
+import { usuarioRoutes } from "./usuario/usuario.routes";
 
 const app: FastifyInstance = fastify();
 
@@ -17,6 +18,10 @@ app.register(arCondicionadoRoutes, {
 
 app.register(pavilhaoRoutes, {
     prefix: 'pavilhoes'
+})
+
+app.register(usuarioRoutes, {
+    prefix: 'usuarios'
 })
 
 app.setErrorHandler((error, request, reply) => {

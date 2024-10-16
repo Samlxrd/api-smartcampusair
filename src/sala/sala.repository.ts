@@ -57,9 +57,7 @@ export class SalaRepositoryPrisma implements SalaRepository {
 
     async delete(id: number): Promise<void> {
         await prisma.sala.delete({
-            where: {
-                id
-            }
+            where: { id }
         });
     }
 }
