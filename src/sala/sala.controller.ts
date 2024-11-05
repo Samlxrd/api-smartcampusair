@@ -21,7 +21,7 @@ export class SalaController {
     }
 
     async update(id: number, req: FastifyRequest, reply: FastifyReply) {
-        const salaData = updateSalaSchema.parse(req.body);
+        const salaData = updateSalaSchema.parse(req.body) as UpdateSalaSchema;
         const result = await this.salaUseCase.update(id, salaData);
         return reply.send(result);
     }
