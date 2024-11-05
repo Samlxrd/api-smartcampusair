@@ -7,13 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model arcondicionado {
-  id           Int     @id @default(autoincrement())
-  id_sala      Int
-  status_atual Boolean
-  sala         sala    @relation(fields: [id_sala], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model ocorrencia {
   id          Int      @id @default(autoincrement())
   momento     DateTime @db.Timestamp(6)
@@ -26,13 +19,13 @@ model ocorrencia {
 }
 
 model sala {
-  id             Int              @id @default(autoincrement())
-  nome           String           @db.VarChar(50)
-  id_pav         Int
-  andar          Int
-  arcondicionado arcondicionado[]
-  ocorrencia     ocorrencia[]
-  pavilhao       pavilhao         @relation(fields: [id_pav], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id           Int          @id @default(autoincrement())
+  nome         String       @db.VarChar(50)
+  id_pav       Int
+  andar        Int
+  status_atual Boolean
+  ocorrencia   ocorrencia[]
+  pavilhao     pavilhao     @relation(fields: [id_pav], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model pavilhao {

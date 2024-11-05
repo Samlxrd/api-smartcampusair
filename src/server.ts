@@ -2,7 +2,6 @@ import fastify, { FastifyInstance } from "fastify";
 import { salaRoutes } from "./sala/sala.routes";
 import { ApiError } from "./errors";
 import { z } from "zod";
-import { arCondicionadoRoutes } from "./arcondicionado/ar.routes";
 import { pavilhaoRoutes } from "./pavilhao/pavilhao.routes";
 import { usuarioRoutes } from "./usuario/usuario.routes";
 
@@ -11,10 +10,6 @@ const app: FastifyInstance = fastify();
 app.register(salaRoutes, {
     prefix: 'salas'
 });
-
-app.register(arCondicionadoRoutes, {
-    prefix: 'ar'
-})
 
 app.register(pavilhaoRoutes, {
     prefix: 'pavilhoes'
@@ -42,7 +37,7 @@ app.setErrorHandler((error, request, reply) => {
     }
 })
 
-app.listen({ port: 5000}, () => {
-    console.log('[🚀] http://localhost:5000/')
+app.listen({ port: 5100}, () => {
+    console.log('[🚀] http://localhost:5100/')
     console.log(app.printRoutes())
 })

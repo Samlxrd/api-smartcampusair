@@ -1,6 +1,6 @@
 import { prisma } from "../database/prisma-client";
 import { Sala, SalaRepository } from "./sala.interface";
-import { CreateSalaSchema, UpdateSalaSchema } from "./sala.schema";
+import { CreateSalaSchema, UpdateSalaSchema, UpdateStatusSalaSchema } from "./sala.schema";
 
 export class SalaRepositoryPrisma implements SalaRepository {
     async create(data: CreateSalaSchema): Promise<Sala> {
@@ -9,6 +9,7 @@ export class SalaRepositoryPrisma implements SalaRepository {
                 nome: data.nome,
                 id_pav: data.id_pav,
                 andar: data.andar,
+                status_atual: data.status_atual
             }
         });
         return result;
@@ -34,7 +35,7 @@ export class SalaRepositoryPrisma implements SalaRepository {
 
     async getAll(): Promise<Sala[]> {
         const salasPorPavilhao = await prisma.$queryRaw`
-        SELECT p.nome as pavilhao, array_agg(json_build_object('id', s.id, 'nome', s.nome, 'andar', s.andar) ORDER BY s.andar ASC) AS salas
+        SELECT p.nome as pavilhao, array_agg(json_build_object('id', s.id, 'nome', s.nome, 'andar', s.andar, 'status_atual', s.status_atual) ORDER BY s.andar ASC) AS salas
         FROM sala s
         JOIN pavilhao p ON s.id_pav = p.id
         GROUP BY p.nome
@@ -49,7 +50,18 @@ export class SalaRepositoryPrisma implements SalaRepository {
             data: {
                 nome: data.nome,
                 id_pav: data.id_pav,
-                andar: data.andar
+                andar: data.andar,
+                status_atual: data.status_atual
+            }
+        });
+        return result;
+    }
+
+    async updateStatus(id: number, data: UpdateStatusSalaSchema): Promise<Sala> {
+        const result = await prisma.sala.update({
+            where: { id },
+            data: {
+                status_atual: data.presence
             }
         });
         return result;
