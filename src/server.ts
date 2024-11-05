@@ -42,7 +42,7 @@ app.setErrorHandler((error, request, reply) => {
     }
 })
 
-app.listen({ port: 5000}, () => {
-    console.log('[🚀] http://localhost:5000/')
+app.listen({ port: 5100}, () => {
+    console.log('[🚀] http://localhost:5100/')
     console.log(app.printRoutes())
 })
