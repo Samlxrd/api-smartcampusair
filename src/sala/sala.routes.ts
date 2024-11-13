@@ -21,8 +21,13 @@ export async function salaRoutes(app: FastifyInstance) {
     });
     app.patch<{ Params: IdParams }> ('/status/:id', async(req, reply) => {
         if (!req.params.id) { throw new ApiError(400, 'Id não informado'); }
-
         const id = Number(req.params.id);
         return salaController.updateStatus(id, req, reply);
+    });
+
+    app.patch<{ Params: IdParams }> ('/status/:id/mode', async(req, reply) => {
+        if (!req.params.id) { throw new ApiError(400, 'Id não informado'); }
+        const id = Number(req.params.id);
+        return salaController.updateMode(id, req, reply);
     });
 }

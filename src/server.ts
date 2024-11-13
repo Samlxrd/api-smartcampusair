@@ -4,8 +4,13 @@ import { ApiError } from "./errors";
 import { z } from "zod";
 import { pavilhaoRoutes } from "./pavilhao/pavilhao.routes";
 import { usuarioRoutes } from "./usuario/usuario.routes";
+import fastifyCors from '@fastify/cors';
 
 const app: FastifyInstance = fastify();
+
+app.register(fastifyCors, {
+    origin: '*',
+});
 
 app.register(salaRoutes, {
     prefix: 'salas'
@@ -37,7 +42,7 @@ app.setErrorHandler((error, request, reply) => {
     }
 })
 
-app.listen({ port: 5100}, () => {
-    console.log('[🚀] http://localhost:5100/')
+app.listen({ port: 3333}, () => {
+    console.log('[🚀] http://localhost:3333/')
     console.log(app.printRoutes())
 })
