@@ -3,7 +3,7 @@ import { PavilhaoRepository } from "../pavilhao/pavilhao.interface";
 import { PavilhaoRepositoryPrisma } from "../pavilhao/pavilhao.repository";
 import { Sala, SalaRepository } from "./sala.interface";
 import { SalaRepositoryPrisma } from "./sala.repository";
-import { CreateSalaSchema, UpdateSalaSchema, UpdateStatusSalaSchema } from "./sala.schema";
+import { CreateSalaSchema, UpdateModoAutomaticoSchema, UpdateSalaSchema, UpdateStatusSalaSchema } from "./sala.schema";
 
 export class SalaUsecase {
     private salaRepository: SalaRepository;
@@ -11,6 +11,17 @@ export class SalaUsecase {
     constructor() {
         this.salaRepository = new SalaRepositoryPrisma();
         this.pavilhaoRepository = new PavilhaoRepositoryPrisma();
+    }
+
+    async handleUpdateMode(id: number, data: UpdateModoAutomaticoSchema): Promise<void> {
+        const response = await fetch(`http://localhost:5050/status/${id}/mode`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ automaticMode: data.modo_automatico }),
+          });
+        return response.json();
     }
 
     async create(data: CreateSalaSchema): Promise<Sala> {
@@ -64,14 +75,20 @@ export class SalaUsecase {
             throw new ApiError(404, 'Sala não encontrada');
         }
 
-        if (sala.status_atual === data.presence) {
-            console.log('Requisição recebida, status não alterado:', data.presence)
-            return sala;
+        const result = await this.salaRepository.updateStatus(id, data);
+        return result;
+    }
+
+    async updateMode(id: number, data: UpdateModoAutomaticoSchema): Promise<Sala> {
+        const sala = await this.salaRepository.findById(id);
+
+        if (!sala) {
+            throw new ApiError(404, 'Sala não encontrada');
         }
 
-        console.log('Requisição recebida, status alterado:', data.presence)
+        const result = await this.salaRepository.updateMode(id, data);
+        await this.handleUpdateMode(id, data);
 
-        const result = await this.salaRepository.updateStatus(id, data);
         return result;
     }
 

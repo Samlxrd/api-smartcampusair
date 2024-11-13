@@ -19,13 +19,15 @@ model ocorrencia {
 }
 
 model sala {
-  id           Int          @id @default(autoincrement())
-  nome         String       @db.VarChar(50)
-  id_pav       Int
-  andar        Int
-  status_atual Boolean
-  ocorrencia   ocorrencia[]
-  pavilhao     pavilhao     @relation(fields: [id_pav], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id              Int          @id @default(autoincrement())
+  nome            String       @db.VarChar(50)
+  id_pav          Int
+  andar           Int
+  presenca        Boolean
+  temperatura     Float?
+  modo_automatico Boolean?     @default(false)
+  ocorrencia      ocorrencia[]
+  pavilhao        pavilhao     @relation(fields: [id_pav], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model pavilhao {

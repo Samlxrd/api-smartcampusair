@@ -9,7 +9,7 @@ export const createSalaSchema = z.object({
     .number({ message: 'Você deve informar o andar da sala.'})
     .int({ message: 'O andar da sala deve ser um número inteiro.'})
     .nonnegative({ message: 'Andar inválido.'}),
-    status_atual: z.boolean({ message: 'Você deve informar o status atual da sala.'})
+    presenca: z.boolean({ message: 'Você deve informar o status atual da sala.'}),
 });
 
 export type CreateSalaSchema = z.infer<typeof createSalaSchema>;
@@ -20,13 +20,22 @@ export const updateSalaSchema = z.object({
     andar: z.coerce.number()
     .int({ message: 'O andar da sala deve ser um número inteiro.'})
     .nonnegative({ message: 'Andar inválido.'}).optional(),
-    status_atual: z.boolean().optional()
+    presenca: z.boolean().optional(),
+    temperatura: z.number().optional(),
+    modo_automatico: z.boolean().optional()
 });
 
 export type UpdateSalaSchema = z.infer<typeof updateSalaSchema>;
 
 export const updateStatusSalaSchema = z.object({
-    presence: z.boolean({ message: 'Você deve informar o status atual da sala.'})
+    presence: z.boolean({ message: 'Você deve informar o status atual da sala.'}),
+    temperature: z.number({ message: 'Você deve informar a temperatura da sala.'})
 });
 
 export type UpdateStatusSalaSchema = z.infer<typeof updateStatusSalaSchema>;
+
+export const updateModoAutomaticoSchema = z.object({
+    modo_automatico: z.boolean({ message: 'Você deve informar o modo automático da sala.'})
+});
+
+export type UpdateModoAutomaticoSchema = z.infer<typeof updateModoAutomaticoSchema>;
