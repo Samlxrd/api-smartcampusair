@@ -15,9 +15,10 @@ Certifique-se de ter as seguintes ferramentas instaladas:
 
 ## 🛠️ Tecnologias Utilizadas
 - Framework: Fastify
-- ORM: Prisma
+- Linguagem: Typscript
 - Validação: Zod
 - Banco de Dados: PostgreSQL
+- ORM: Prisma
 
 ## 📂 Estrutura do Projeto
 <pre>
