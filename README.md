@@ -11,6 +11,7 @@ O sistema permite monitorar salas e controlar manualmente o desligamento dos apa
 Certifique-se de ter as seguintes ferramentas instaladas:
 
 - Node.js (Foi utilizado Node v20.15.0)
+- PostgreSQL
 - npm ou yarn
 
 ## 🛠️ Tecnologias Utilizadas
