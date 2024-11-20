@@ -1,11 +1,8 @@
 import bcrypt from 'bcrypt';
-import { env } from './env';
-
-const saltRounds = env.SALT_ROUNDS | 10;
 
 export async function hashPassword(password: string) {
     try {
-        const salt = await bcrypt.genSalt(saltRounds);
+        const salt = await bcrypt.genSalt(11);
         const hashedPassword = await bcrypt.hash(password, salt);
         return hashedPassword;
     } catch (error) {
