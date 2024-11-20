@@ -1,3 +1,4 @@
+# SmartCampusAir - Backend
 Este é o backend do projeto de sistema responsável pelo gerenciamento de ar-condicionado em salas de aula, desenvolvido como TCC em Ciência da Computação na Universidade Estadual de Santa Cruz, 2024.2.
 O sistema permite monitorar salas e controlar manualmente o desligamento dos aparelhos de ar-condicionado.
 
