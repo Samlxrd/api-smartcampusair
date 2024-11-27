@@ -3,7 +3,7 @@ import { PavilhaoRepository } from "../pavilhao/pavilhao.interface";
 import { PavilhaoRepositoryPrisma } from "../pavilhao/pavilhao.repository";
 import { Sala, SalaRepository } from "./sala.interface";
 import { SalaRepositoryPrisma } from "./sala.repository";
-import { CreateSalaSchema, UpdateModoAutomaticoSchema, UpdateSalaSchema, UpdateStatusSalaSchema } from "./sala.schema";
+import { CreateSalaSchema, TurnOffSchema, UpdateModoAutomaticoSchema, UpdateSalaSchema, UpdateStatusSalaSchema } from "./sala.schema";
 
 export class SalaUsecase {
     private salaRepository: SalaRepository;
@@ -38,6 +38,11 @@ export class SalaUsecase {
 
         const result = this.salaRepository.create(data);
 
+        return result;
+    }
+
+    async getById(id: number): Promise<Sala | null> {
+        const result = this.salaRepository.findById(id);
         return result;
     }
 
@@ -101,5 +106,23 @@ export class SalaUsecase {
         }
 
         await this.salaRepository.delete(id);
+    }
+
+    async turnOff(id: number, data: TurnOffSchema): Promise<void> {
+        const sala = await this.salaRepository.findById(id);
+
+        if (!sala) {
+            throw new ApiError(404, 'Sala não encontrada');
+        }
+        
+        const response = await fetch(`http://localhost:5050/leitura/${id}/turnoff`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        return response.json();
     }
 }

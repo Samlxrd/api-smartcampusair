@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { SalaUsecase } from "./sala.usecase";
-import { createSalaSchema, updateModoAutomaticoSchema, updateSalaSchema, UpdateSalaSchema, UpdateStatusSalaSchema, updateStatusSalaSchema } from "./sala.schema";
+import { createSalaSchema, turnOffSchema, updateModoAutomaticoSchema, updateSalaSchema, UpdateSalaSchema, UpdateStatusSalaSchema, updateStatusSalaSchema } from "./sala.schema";
 import { ApiError } from "../errors";
 
 export class SalaController {
@@ -13,6 +13,11 @@ export class SalaController {
         const salaData = createSalaSchema.parse(req.body);
         const result = await this.salaUseCase.create(salaData);
         return reply.code(201).send(result);
+    }
+
+    async get(id: number, req: FastifyRequest, reply: FastifyReply) {
+        const result = await this.salaUseCase.getById(id);
+        return reply.send(result);
     }
 
     async getAll(req: FastifyRequest, reply: FastifyReply) {
@@ -45,5 +50,11 @@ export class SalaController {
 
         await this.salaUseCase.delete(Number(id));
         return reply.send({ message: 'Sala deletada com sucesso' });
+    }
+
+    async turnOff(id: number, req: FastifyRequest, reply: FastifyReply) {
+        const turnOffData = turnOffSchema.parse(req.body);
+        const result = await this.salaUseCase.turnOff(id, turnOffData);
+        return reply.send(result);
     }
 }

@@ -11,6 +11,12 @@ export async function salaRoutes(app: FastifyInstance) {
 
     app.post('/', async(req, reply) => salaController.create(req, reply));
     app.get('/', async(req, reply) => salaController.getAll(req, reply));
+    app.get<{ Params: IdParams }>('/:id', async(req, reply) => {
+        if (!req.params.id) { throw new ApiError(400, 'Id não informado'); }
+        
+        const id = Number(req.params.id);
+        return salaController.get(id, req, reply);
+    });
     app.delete('/:id', async(req, reply) => salaController.delete(req, reply));     
     app.patch<{ Params: IdParams }> ('/:id', async(req, reply) => {
 
@@ -29,5 +35,11 @@ export async function salaRoutes(app: FastifyInstance) {
         if (!req.params.id) { throw new ApiError(400, 'Id não informado'); }
         const id = Number(req.params.id);
         return salaController.updateMode(id, req, reply);
+    });
+
+    app.post<{ Params: IdParams }> ('/:id/turnoff', async(req, reply) => {
+        if (!req.params.id) { throw new ApiError(400, 'Id não informado'); }
+        const id = Number(req.params.id);
+        return salaController.turnOff(id, req, reply);
     });
 }
