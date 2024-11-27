@@ -28,7 +28,7 @@ export const updateSalaSchema = z.object({
 export type UpdateSalaSchema = z.infer<typeof updateSalaSchema>;
 
 export const updateStatusSalaSchema = z.object({
-    presence: z.boolean({ message: 'Você deve informar o status atual da sala.'}),
+    presence: z.boolean({ message: 'Você deve informar a presenca na sala (true/false).'}),
     temperature: z.number({ message: 'Você deve informar a temperatura da sala.'})
 });
 
@@ -39,3 +39,9 @@ export const updateModoAutomaticoSchema = z.object({
 });
 
 export type UpdateModoAutomaticoSchema = z.infer<typeof updateModoAutomaticoSchema>;
+
+export const turnOffSchema = z.object({
+    status: z.boolean({ message: 'Você deve informar que é um comando de desligamento (false).'})
+});
+
+export type TurnOffSchema = z.infer<typeof turnOffSchema>;
